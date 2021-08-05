@@ -1,8 +1,4 @@
-### purpose of program - to meausre co2 levels in aquarium and turn on and off the c02 diffuser based on ph and kh levels
-# importing uniform to have slightly different changes which would happen in real life
-
-
-# importation of the packages and libraries needed#
+# importation of the packages and libraries needed
 
 from random import uniform
 import matplotlib.pyplot as plt
@@ -40,7 +36,7 @@ c02_length = []
 ph_length = []
 
 start_c02 = 12.839 * base_dkh * 10 ** (6.37 - base_ph)
-
+# for loop to calculate
 for x in range(time1):
     if base_c02 <= requested_c02level:
         base_c02 += uniform(0.8, 1.2)
@@ -62,16 +58,15 @@ for x in range(time1):
 print("The final CO2 level over 24 hours is " + str(round(base_c02, 3)))
 print("The final pH level is " + str(round(ph, 3)))
 
-print(time1)
+
 # for loop to get x axis for graph
 for x in range(time1):
     x_length.append(x)
 
 x_length.append(time1)
-print("xlength" + str(x_length))
-
+# appends list with values from for loop
 c02_length.insert(0, int(start_c02))
-print(str(c02_length))
+
 ph_length.insert(0, int(base_ph))
 
 # plotting
@@ -92,3 +87,4 @@ plt.xlabel('Length of Time (Hours) ')
 plt.ylabel('Level of pH ')
 
 plt.show()
+
