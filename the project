@@ -1,8 +1,8 @@
 # importation of the packages and libraries needed
 
 from random import uniform
-import matplotlib.pyplot as plt
-import numpy as np
+from plotly.subplots import make_subplots
+import plotly.graph_objects as go
 
 
 # user input for tailored results
@@ -20,13 +20,14 @@ base_ph = get_answer("What is your starting pH? ")
 base_dkh = get_answer("What is your starting dKH? ")
 requested_c02level = get_answer("What is your requested maximum CO2 level? ")
 max_ph = get_answer("What is your maximum level of pH? ")
-time_of_simulation = get_answer("How long would you like for the program to run? ")
+time_of_simulation = get_answer(
+    "How long would you like for the program to run? ")
 
 # variable for length of time
 time1 = int(time_of_simulation)
 
 # equation for determining c02 levels
-base_c02 = 12.839 * base_dkh * 10 ** (6.37 - base_ph)
+base_c02 = 12.839 * base_dkh * 10**(6.37 - base_ph)
 ph = base_ph
 
 print("The starting c02 is " + str(round(base_c02, 3)))
@@ -35,7 +36,7 @@ x_length = []
 c02_length = []
 ph_length = []
 
-start_c02 = 12.839 * base_dkh * 10 ** (6.37 - base_ph)
+start_c02 = 12.839 * base_dkh * 10**(6.37 - base_ph)
 # for loop to calculate
 for x in range(time1):
     if base_c02 <= requested_c02level:
@@ -58,7 +59,6 @@ for x in range(time1):
 print("The final CO2 level over 24 hours is " + str(round(base_c02, 3)))
 print("The final pH level is " + str(round(ph, 3)))
 
-
 # for loop to get x axis for graph
 for x in range(time1):
     x_length.append(x)
@@ -70,21 +70,24 @@ c02_length.insert(0, int(start_c02))
 ph_length.insert(0, int(base_ph))
 
 # plotting
-xPoints = np.array(x_length)
-y1Points = np.array(c02_length)
-y2Points = np.array(ph_length)
 
-plt.subplot(1, 2, 1)  # row 1, col 2 index 1
-plt.plot(xPoints, y1Points)
-plt.title("C02 Over Time")
-plt.xlabel('Length of Time (Hours) ')
-plt.ylabel('Amount of C02 (Measured in PPM)')
+fig = make_subplots(rows=1,
+                    cols=2,
+                    subplot_titles=("ph Over Time", "CO2 over Time"))
 
-plt.subplot(1, 2, 2)  # index 2
-plt.plot(xPoints, y2Points)
-plt.title("pH Level of Water")
-plt.xlabel('Length of Time (Hours) ')
-plt.ylabel('Level of pH ')
+# Add traces
+fig.add_trace(go.Scatter(x=x_length, y=c02_length, name="CO2"), row=1, col=1)
+fig.add_trace(go.Scatter(x=x_length, y=ph_length, name="pH"), row=1, col=2)
 
-plt.show()
+# Update xaxis properties
+fig.update_xaxes(title_text="Time in Hours", row=1, col=1)
+fig.update_xaxes(title_text="Time in Hours", row=1, col=2)
 
+# Update yaxis properties
+fig.update_yaxes(title_text="pH over Time", row=1, col=1)
+fig.update_yaxes(title_text="C02 over Time (PPM)", row=1, col=2)
+
+# Update title and height
+fig.update_layout(title_text="pH and CO2 Over Time", height=700)
+
+fig.show()
