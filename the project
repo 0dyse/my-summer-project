@@ -38,7 +38,7 @@ ph_length = []
 
 start_c02 = 12.839 * base_dkh * 10**(6.37 - base_ph)
 # for loop to calculate
-for x in range(time1):
+for i in range(time1):
     if base_c02 <= requested_c02level:
         base_c02 += uniform(0.8, 1.2)
         # adds c02 if ppm is less than requested c02 level
@@ -60,8 +60,8 @@ print("The final CO2 level over 24 hours is " + str(round(base_c02, 3)))
 print("The final pH level is " + str(round(ph, 3)))
 
 # for loop to get x axis for graph
-for x in range(time1):
-    x_length.append(x)
+for i in range(time1):
+    x_length.append(i)
 
 x_length.append(time1)
 # appends list with values from for loop
@@ -73,7 +73,7 @@ ph_length.insert(0, int(base_ph))
 
 fig = make_subplots(rows=1,
                     cols=2,
-                    subplot_titles=("ph Over Time", "CO2 over Time"))
+                    subplot_titles=("CO2 Over Time", "pH Over Time"))
 
 # Add traces
 fig.add_trace(go.Scatter(x=x_length, y=c02_length, name="CO2"), row=1, col=1)
@@ -84,8 +84,8 @@ fig.update_xaxes(title_text="Time in Hours", row=1, col=1)
 fig.update_xaxes(title_text="Time in Hours", row=1, col=2)
 
 # Update yaxis properties
-fig.update_yaxes(title_text="pH over Time", row=1, col=1)
-fig.update_yaxes(title_text="C02 over Time (PPM)", row=1, col=2)
+fig.update_yaxes(title_text="CO2 over Time (PPM)", row=1, col=1)
+fig.update_yaxes(title_text="pH over Time", row=1, col=2)
 
 # Update title and height
 fig.update_layout(title_text="pH and CO2 Over Time", height=700)
